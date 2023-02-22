@@ -24,7 +24,7 @@ public class CodeGenerator {
 
     private static final String PACK_NAME = "com.dj";
     private static final String AUTHOR = "dj";
-    private static final String TABLE = "sys_user";
+    private static final String TABLE = "dynamic";
 
     /*下面的不用改动*/
     private static final String PROJECT_PATH = System.getProperty("user.dir");
