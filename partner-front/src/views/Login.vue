@@ -27,6 +27,7 @@
   import router from "@/router"
   import request from "@/utils/request";
   import {ElMessage} from "element-plus";
+  import {useUserStore} from "@/stores/user";
 
   const form = reactive({});
 
@@ -43,17 +44,22 @@
   const login = ()=>{
     ruleFormRef.value.validate(valid =>{
       //当valid===true 就可以调用登录接口了
-      request.post("/login",form).then(res =>{
-        if (res.code === '200'){
-          ElMessage.success("登录成功")
-          router.push('/')
-        }else {
-          ElMessage.error(res.msg)
-        }
-      })
+      if (valid){
+        request.post("/login",form).then(res =>{
+          if (res.code === '200'){
+            const store = useUserStore()
+            store.$patch({user:res.data}) //res.data后台返回的数据,存储到缓存里面
+            console.log(store.user);
+            ElMessage.success("登录成功")
+            router.push('/')
+          }else {
+            ElMessage.error(res.msg)
+          }
+        })
+      }
     })
-
   }
+
 
 
 

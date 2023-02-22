@@ -7,11 +7,14 @@ import './assets/css/global.css'
 //引入Element-plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+//pinia持久化
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App)
-
 app.use(ElementPlus)
-app.use(createPinia())
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')
