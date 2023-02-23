@@ -1,5 +1,6 @@
 package com.dj.service;
 
+import com.dj.controller.domain.UserRequest;
 import com.dj.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,7 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
-    User login(User user);
+    User login(UserRequest user);
 
-    User register(User user);
+    User register(UserRequest user);
+
+    void sendEmail(String email, String type);
 }

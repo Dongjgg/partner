@@ -2,6 +2,7 @@ package com.dj.controller;
 
 
 import com.dj.common.Result;
+import com.dj.controller.domain.UserRequest;
 import com.dj.entity.User;
 import com.dj.service.IUserService;
 import io.swagger.annotations.Api;
@@ -35,15 +36,24 @@ public class WebController {
 
     @ApiOperation("用户登录接口")
     @PostMapping("/login")
-    public Result login(@RequestBody User user){
+    public Result login(@RequestBody UserRequest user){
         User res = userService.login(user);
         return Result.success(res);
     }
 
     @ApiOperation(value = "用户注册接口")
     @PostMapping("/register")
-    public Result register(@RequestBody User user) {
+    public Result register(@RequestBody UserRequest user) {
         userService.register(user);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "邮箱验证接口")
+    @GetMapping("/email")
+    public Result sendEmail(@RequestParam String email, @RequestParam String type) {  //  ?email=xxx&type=xxx
+        long start = System.currentTimeMillis();
+        userService.sendEmail(email, type);
+        log.info("发送邮件花费时间：{}", System.currentTimeMillis() - start);
         return Result.success();
     }
 }

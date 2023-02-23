@@ -43,6 +43,11 @@ private static final long serialVersionUID = 1L;
     @Alias("昵称")
     private String name;
 
+    // 邮箱
+    @ApiModelProperty("邮箱")
+    @Alias("邮箱")
+    private String email;
+
     // 唯一标识uid
     @ApiModelProperty("唯一标识uid")
     @Alias("唯一标识uid")
