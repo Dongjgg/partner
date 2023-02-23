@@ -14,15 +14,15 @@
           <el-input v-model="form.confirm" show-password placeholder="请确认密码"
                     autocomplete="new-password" :prefix-icon="Lock"></el-input>
         </el-form-item>
-<!--        <el-form-item prop="email">-->
-<!--          <el-input v-model="form.email" placeholder="请输入邮箱" :prefix-icon="Message"></el-input>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item prop="emailCode">-->
-<!--          <div style="display: flex">-->
-<!--            <el-input style="flex: 1" v-model="form.emailCode"></el-input>-->
-<!--            <el-button style="width: 120px; margin-left: 5px" @click="sendEmail" :disabled="time > 0">点击发送<span v-if="time">（{{ time }}）</span></el-button>-->
-<!--          </div>-->
-<!--        </el-form-item>-->
+        <el-form-item prop="email">
+          <el-input v-model="form.email" placeholder="请输入邮箱" :prefix-icon="Message"></el-input>
+        </el-form-item>
+        <el-form-item prop="emailCode">
+          <div style="display: flex">
+            <el-input style="flex: 1" v-model="form.emailCode"></el-input>
+            <el-button style="width: 120px; margin-left: 5px" @click="sendEmail" :disabled="time > 0">点击发送<span v-if="time">（{{ time }}）</span></el-button>
+          </div>
+        </el-form-item>
         <el-form-item>
           <el-input v-model="form.name" placeholder="请设置昵称" :prefix-icon="UserFilled"></el-input>
         </el-form-item>
