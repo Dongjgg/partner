@@ -66,17 +66,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User register(UserRequest user) {
+        //校验邮箱
+        validateEmail(user.getEmailCode());
         try{
-            //校验邮箱
-            String emailCode = user.getEmailCode();
-            Long timestamp = CODE_MAP.get(emailCode);
-            if (timestamp == null){
-                throw new ServiceException("验证码错误");
-            }
-            if (timestamp + TIME_IN_MS5 < System.currentTimeMillis()){ //说明验证码过期
-                throw new ServiceException("验证码已过期");
-            }
-
             User saveUser = new User();
             BeanUtils.copyProperties(user,saveUser); //把请求数据的属性copy给存储数据库的属性
             //存储用户
@@ -116,18 +108,62 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String context = "<b>尊敬的用户：</b><br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您好，" +
                 "Partner交友网提醒您本次的验证码是：<b>{}</b>，" + "有效期5分钟。<br><br><br><b>Partner交友网</b>";
         String html = StrUtil.format(context, code);//把生成的验证码填入
-        if ("REGISTER".equals(type)){ //注册
-            //校验邮箱是否已注册
-            User user = getOne(new QueryWrapper<User>().eq("email", email));
+        //校验邮箱是否已注册
+        User user = getOne(new QueryWrapper<User>().eq("email", email));
+        if ("REGISTER".equals(type)){   //无需权限验证即可发送邮件
             if (user!=null){
                 throw new ServiceException("该邮箱已注册");
             }
-            ThreadUtil.execAsync(() -> {  // 多线程执行异步请求
-                emailUtils.sendHtml("【Partner交友网】邮箱注册验证", html, email);
-            });
-            CODE_MAP.put(code,System.currentTimeMillis());
         }
+        // 忘记密码
+        ThreadUtil.execAsync(() -> {  // 多线程执行异步请求
+            emailUtils.sendHtml("【Partner交友网】邮箱验证提醒", html, email);
+        });
+        CODE_MAP.put(code,System.currentTimeMillis());
 
     }
+
+    /**
+     * 重置密码
+     *
+     * @param userRequest
+     * @return
+     */
+    @Override
+    public String passwordReset(UserRequest userRequest) {
+        String email = userRequest.getEmail();
+        User dbUser = getOne(new UpdateWrapper<User>().eq("email", email));
+        if (dbUser == null) {
+            throw new ServiceException("未找到用户");
+        }
+        // 校验邮箱验证码
+        validateEmail(userRequest.getEmailCode());
+        String newPass = "123";
+        dbUser.setPassword(newPass);
+        try {
+            updateById(dbUser);   // 设置到数据库
+        } catch (Exception e) {
+            throw new RuntimeException("注册失败", e);
+        }
+        return newPass;
+    }
+
+    /**
+     * 校验邮箱
+     * @param emailCode
+     */
+    private void validateEmail(String emailCode){
+        //校验邮箱
+        Long timestamp = CODE_MAP.get(emailCode);
+        if (timestamp == null){
+            throw new ServiceException("验证码错误");
+        }
+        if (timestamp + TIME_IN_MS5 < System.currentTimeMillis()){ //说明验证码过期
+            throw new ServiceException("验证码已过期");
+        }
+        CODE_MAP.remove(emailCode);  //清除缓存
+    }
+
+
 
 }

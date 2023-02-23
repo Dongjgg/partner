@@ -56,4 +56,11 @@ public class WebController {
         log.info("发送邮件花费时间：{}", System.currentTimeMillis() - start);
         return Result.success();
     }
+
+    @ApiOperation(value = "密码重置接口")
+    @PostMapping("/password/reset")
+    public Result passwordReset(@RequestBody UserRequest userRequest) {
+        String newPass = userService.passwordReset(userRequest);
+        return Result.success(newPass);
+    }
 }

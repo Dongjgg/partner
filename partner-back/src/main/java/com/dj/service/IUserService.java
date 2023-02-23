@@ -19,4 +19,6 @@ public interface IUserService extends IService<User> {
     User register(UserRequest user);
 
     void sendEmail(String email, String type);
+
+    String passwordReset(UserRequest userRequest);
 }
