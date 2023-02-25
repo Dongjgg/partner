@@ -49,9 +49,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User login(UserRequest user) {
-        User dbUser = null;
+        User dbUser;
         try {
-            dbUser = getOne(new UpdateWrapper<User>().eq("username", user.getUsername()));
+            dbUser = getOne(new QueryWrapper<User>().eq("username", user.getUsername()).or().eq("email",user.getUsername()));
         }catch (Exception e){
             throw new RuntimeException("系统异常");
         }
