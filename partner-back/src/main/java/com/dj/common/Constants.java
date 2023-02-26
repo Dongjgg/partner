@@ -6,4 +6,6 @@ public interface Constants {
 
     String DATAE_RULE_YYYYMMDD= "yyyyMMdd"; //时间规则
 
+    String EMAIL_CODE = "email.code.";
+
 }

@@ -20,6 +20,7 @@ public enum EmailCodeEnum {
         this.value = value;
     }
 
+    //获取对应名称的value
     public static String getValue(String type) {
         EmailCodeEnum[] values = values();
         for (EmailCodeEnum codeEnum : values) {
