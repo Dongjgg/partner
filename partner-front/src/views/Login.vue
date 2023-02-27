@@ -84,8 +84,7 @@ const login = () => {
       request.post("/login", form).then(res => {
         console.log(res)
         if (res.code === '200') {
-          //   store.$patch({user: res.data})   // res.data 是后台返回的用户数据，存储到缓存里面
-          store.setLoginInfo(res.data)
+            store.setLoginInfo(res.data)   // res.data 是后台返回的用户数据，存储到缓存里面
           ElMessage.success('登录成功')
           router.push('/')
         } else {
