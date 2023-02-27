@@ -8,4 +8,8 @@ public interface Constants {
 
     String EMAIL_CODE = "email.code.";
 
+    String LOGIN_USER_KEY = "userInfo";
+
+    String PASSWORD_KEY = "dsa<>>dss1__2sadas__(UI(UE><MDS<MD>?SMALDNKLSJ@";
+
 }

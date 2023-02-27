@@ -1,5 +1,6 @@
 package com.dj.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -7,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
 import java.net.URLEncoder;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dj.common.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.io.InputStream;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     @Resource
@@ -60,6 +64,14 @@ public class UserController {
 
     @GetMapping
     public Result findAll() {
+
+        boolean login = StpUtil.isLogin();
+        log.info("当前是否登录",login);
+        StpUtil.checkLogin(); // check的方式
+        String loginId = (String)StpUtil.getLoginId();
+        log.info("loginId:{}",loginId);
+        User user = StpUtil.getSession().getModel(Constants.LOGIN_USER_KEY, User.class);
+        log.info("当前用户登录：{}",user);
         return Result.success(userService.list());
     }
 
@@ -117,5 +129,4 @@ public class UserController {
         userService.saveBatch(list);
         return Result.success();
     }
-
 }

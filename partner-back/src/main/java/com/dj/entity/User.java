@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import cn.hutool.core.annotation.Alias;
+import com.dj.common.LDTConfig;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,7 +14,7 @@ import lombok.Setter;
 
 /**
 * <p>
-* 
+*
 * </p>
 *
 * @author dj

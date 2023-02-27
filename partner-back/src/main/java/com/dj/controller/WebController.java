@@ -1,7 +1,7 @@
 package com.dj.controller;
 
-
 import com.dj.common.Result;
+import com.dj.controller.domain.LoginDTO;
 import com.dj.controller.domain.UserRequest;
 import com.dj.entity.User;
 import com.dj.service.IUserService;
@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-
 @Api(tags = "无权限接口列表")
 @RestController
 @Slf4j
 public class WebController {
 
     @Resource
-    private IUserService userService;
+    IUserService userService;
 
     @GetMapping(value = "/")
     @ApiOperation(value = "版本校验接口")
@@ -34,12 +33,21 @@ public class WebController {
         return ver;
     }
 
-    @ApiOperation("用户登录接口")
+    @ApiOperation(value = "用户登录接口")
     @PostMapping("/login")
-    public Result login(@RequestBody UserRequest user){
-        User res = userService.login(user);
+    public Result login(@RequestBody UserRequest user) {
+        long startTime = System.currentTimeMillis();
+        LoginDTO res = userService.login(user);
+        log.info("登录花费时间 {}ms", System.currentTimeMillis() - startTime);
         return Result.success(res);
     }
+
+//    @ApiOperation(value = "用户退出登录接口")
+//    @GetMapping("/logout/{uid}")
+//    public Result logout(@PathVariable String uid) {
+//        userService.logout(uid);
+//        return Result.success();
+//    }
 
     @ApiOperation(value = "用户注册接口")
     @PostMapping("/register")
@@ -63,4 +71,5 @@ public class WebController {
         String newPass = userService.passwordReset(userRequest);
         return Result.success(newPass);
     }
+
 }

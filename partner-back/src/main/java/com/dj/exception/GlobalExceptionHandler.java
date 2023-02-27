@@ -1,6 +1,6 @@
 package com.dj.exception;
 
-
+import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.core.util.StrUtil;
 import com.dj.common.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(value = SaTokenException.class)
+    public Result notLoginException(SaTokenException e) {
+        log.error("权限验证错误", e);
+        return Result.error("401", "请登录");
+    }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result methodArgumentNotValidException(MethodArgumentNotValidException e) {

@@ -1,5 +1,6 @@
 package com.dj.service;
 
+import com.dj.controller.domain.LoginDTO;
 import com.dj.controller.domain.UserRequest;
 import com.dj.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -14,11 +15,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
-    User login(UserRequest user);
+    LoginDTO login(UserRequest user);
 
-    User register(UserRequest user);
+    void register(UserRequest user);
 
     void sendEmail(String email, String type);
 
     String passwordReset(UserRequest userRequest);
+
+    void logout(String uid);
+
+    User saveUser(User user);
 }
