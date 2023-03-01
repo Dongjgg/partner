@@ -9,21 +9,37 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: () => import  ('../views/HomeView.vue')
-        },
-        {
-            path: '/personCenter',   //  路由 -> //personCenter  不对
-            name: 'PersonCenter',
-            component: () => import('../views/PersonCenter.vue')
+            name: 'Layout',
+            component: () => import('../layout/Layout.vue'),
+            redirect: '/home',
+            children: [
+                {
+                    path: 'home',
+                    name: 'Home',
+                    component: () => import('../views/HomeView.vue'),
+                },
+                {
+                    path: 'personCenter',   //  路由 -> //personCenter  不对
+                    name: 'PersonCenter',
+                    component: () => import('../views/PersonCenter.vue')
+                },
+            ]
         },
         {
             path: '/login',
-            name: 'login',
-            component: () => import  ('../views/Login.vue')
+            name: 'Login',
+            component: () => import('../views/Login.vue')
         },
-        {path:'/register',name:404,component:()=>import('../views/Register.vue')},
-        {path:'/404',name:404,component:()=>import('../views/404.vue')},
+        {
+            path: '/register',
+            name: 'Register',
+            component: () => import('../views/Register.vue')
+        },
+        {
+            path: '/404',
+            name: '404',
+            component: () => import('../views/404.vue')
+        },
         {
             path: '/:pathMatch(.*)',  // 匹配所有未知路由
             redirect: '/404'    // 重定向到404页面
