@@ -2,43 +2,79 @@
   <div style="display: flex;" class="container-height">
     <div style="width: 240px; padding: 20px" class="box">
       <ul>
-        <li @click="changePagePath('myInfo')" :class="pagePath === 'myInfo' ? 'menu-active' : ''"><el-icon class="menu-icon"><User /></el-icon>个人资料</li>
-        <li><el-icon class="menu-icon"><Lock /></el-icon>修改密码</li>
-        <li><el-icon class="menu-icon"><Message /></el-icon>消息提醒</li>
-        <li @click="changePagePath('myDynamic')" :class="pagePath === 'myDynamic' ? 'menu-active' : ''"><el-icon class="menu-icon"><Histogram /></el-icon>我的动态</li>
+        <li>个人资料</li>
+        <li>消息提醒</li>
+        <li>我的动态</li>
       </ul>
     </div>
 
     <div style="flex: 1; margin-left: 20px; padding: 30px 100px" class="box">
-      <MyInfo v-if="pagePath === 'myInfo'" />
-      <MyDynamic v-if="pagePath === 'myDynamic'" />
+      <el-form :model="state.user" label-width="80px">
+        <el-form-item label="">
+          <el-upload
+              class="avatar-uploader"
+              :action="url"
+              :headers="state.headers"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+          >
+            <img v-if="state.user.avatar" :src="state.user.avatar" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="用户名">
+          <el-input v-model="state.user.username"/>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input v-model="state.user.name"/>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="state.user.email"/>
+        </el-form-item>
+        <el-form-item label="">
+          <el-button type="primary">保 存</el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { User,Message,Histogram, Lock } from '@element-plus/icons-vue'
-import MyInfo from "@/components/MyInfo.vue";
-import MyDynamic from "@/components/MyDynamic.vue";
-import { useRoute } from "vue-router";
-import router from "@/router";
-import {inject} from "vue";
+import {reactive, ref} from "vue";
+import request from "@/utils/request";
+import {useUserStore} from "@/stores/user";
+import config from '../../public/config'
+import { Plus } from '@element-plus/icons-vue'
+import {ElMessage} from "element-plus";
 
-const reload = inject('reload')
+const url = ref('http://' + config.serverUrl + "/file/upload")
+const store = useUserStore()
 
-const route = useRoute()
-const pagePath = route.query.page
+let state = reactive({
+  user: {},
+  headers: {
+    Authorization: store.getBearerToken
+  }
+})
 
-const changePagePath = (pagePath) => {
-  router.push({ query: {page: pagePath} })  // 触发页面参数的更改
-  route.query.page = pagePath     // 触发菜单的高亮和页面你内容的更改
-  reload()    // 重新渲染页面
+const userId = store.getUserId
+const loadUser = () => {
+  request.get('/user/' + userId).then(res => {
+    state.user = res.data
+  })
 }
+loadUser()
 
-
+const handleAvatarSuccess = (res) => {
+  if (res.code === '200') {
+    state.user.avatar = res.data + "?loginId=" + store.getUser.uid  + "&token=" + store.getToken
+  } else {
+    ElMessage.error('上传失败')
+  }
+}
 </script>
 
-<style scoped>
+<style>
 .box {
   background-color: white;
   border-radius: 10px;
@@ -47,14 +83,6 @@ li {
   text-align: center;
   margin: 15px 0;
   cursor: pointer;
-  font-size: 16px;
 }
 
-.menu-icon {
-  margin-right: 5px;
-  top: 2px
-}
-.menu-active {
-  color: dodgerblue;
-}
 </style>
