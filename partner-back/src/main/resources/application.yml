@@ -71,3 +71,9 @@ sa-token:
   token-prefix: Bearer
   # jwt秘钥
   jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk
+
+file:
+  upload:
+    path: E:\IdeaProjects\partner
+  download:
+    ip: localhost
