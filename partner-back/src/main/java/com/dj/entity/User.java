@@ -56,6 +56,10 @@ private static final long serialVersionUID = 1L;
     @Alias("唯一标识uid")
     private String uid;
 
+    @ApiModelProperty("头像")
+    @Alias("头像")
+    private String avatar;
+
 
     @ApiModelProperty("逻辑删除")
     @Alias("逻辑删除")
