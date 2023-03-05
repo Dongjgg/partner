@@ -27,23 +27,24 @@
       <div style="width: 200px; text-align: right; padding-right: 10px">
 
         <el-dropdown>
-          <div class="el-dropdown-link">
-            <el-avatar :size="40" :src="store.loginInfo.user.avatar" style="position: relative; top: 10px; right: 5px" />
-            <span style="font-size: 14px;">{{ store.loginInfo.user.name }}</span>
+          <div class="el-dropdown-link" style="line-height: 60px">
+            <el-avatar :size="40" :src="store.loginInfo.user.avatar" style="position: absolute; top: 10px" />
+            <span style="font-size: 14px; margin-left: 45px">{{ store.loginInfo.user.name }}</span>
             <el-icon class="el-icon--right">
               <arrow-down />
             </el-icon>
           </div>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <div @click="router.push('/personCenter')">个人中心</div>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <div @click="logout">退出登录</div>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <div @click="router.push('/personCenter')">个人信息</div>
+              </el-dropdown-item>
+              <el-dropdown-item>修改密码</el-dropdown-item>
+              <el-dropdown-item>
+                <div @click="logout">退出登录</div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
         </el-dropdown>
       </div> <!-- 头像和下拉菜单 -->
 

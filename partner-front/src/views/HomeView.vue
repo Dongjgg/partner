@@ -38,24 +38,22 @@ load()
           <el-row :gutter="10">
             <el-col :span="12" style="margin-bottom: 10px">
               <img style="width: 100%;"
-                   src="https://cdn.cnbj1.fds.api.mi-img.com/middle.community.vip.bkt/15ee288e6a797869692e596182113345#vipAccount-img"
+                   src="https://ts1.cn.mm.bing.net/th/id/R-C.e0ec0b701bee576e7b4f71cef5fed9c3?rik=uvAN7hxmZKZjQg&riu=http%3a%2f%2fwww.gx8899.com%2fuploads%2fallimg%2f2018012308%2fjd3fjd1u0h3.jpg&ehk=1CSlTf5vZTBSai8mgjr6F9xB9Rq2n7gtbGzgEQ5A2vk%3d&risl=&pid=ImgRaw&r=0"
                    alt="">
             </el-col>
             <el-col :span="12">
               <img style="width: 100%;"
-                   src="https://cdn.cnbj1.fds.api.mi-img.com/middle.community.vip.bkt/15ee288e6a797869692e596182113345#vipAccount-img"
+                   src="https://ts1.cn.mm.bing.net/th/id/R-C.e0ec0b701bee576e7b4f71cef5fed9c3?rik=uvAN7hxmZKZjQg&riu=http%3a%2f%2fwww.gx8899.com%2fuploads%2fallimg%2f2018012308%2fjd3fjd1u0h3.jpg&ehk=1CSlTf5vZTBSai8mgjr6F9xB9Rq2n7gtbGzgEQ5A2vk%3d&risl=&pid=ImgRaw&r=0"
                    alt="">
             </el-col>
 
             <el-col :span="12">
               <img style="width: 100%;"
-                   src="https://cdn.cnbj1.fds.api.mi-img.com/middle.community.vip.bkt/15ee288e6a797869692e596182113345#vipAccount-img"
+                   src="https://img.zcool.cn/community/01608759a7dcbea8012028a948a675.jpg@1280w_1l_2o_100sh.jpg"
                    alt="">
             </el-col>
             <el-col :span="12">
-              <img style="width: 100%;"
-                   src="https://cdn.cnbj1.fds.api.mi-img.com/middle.community.vip.bkt/15ee288e6a797869692e596182113345#vipAccount-img"
-                   alt="">
+              <img style="width: 100%;" src="https://img.zcool.cn/community/01608759a7dcbea8012028a948a675.jpg@1280w_1l_2o_100sh.jpg">
             </el-col>
           </el-row>
         </div>
