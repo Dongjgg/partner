@@ -84,10 +84,11 @@ public class FileController {
     public void downloadFile(@PathVariable String fileFullName,@RequestParam(required = false) String loginId,
                              @RequestParam(required = false) String token,
                              HttpServletResponse response) throws IOException {
-        List<String> tokenList = StpUtil.getTokenValueListByLoginId(loginId);
-        if (CollUtil.isEmpty(tokenList) || !tokenList.contains(token)){
-            return;
-        }
+        //token
+//        List<String> tokenList = StpUtil.getTokenValueListByLoginId(loginId);
+//        if (CollUtil.isEmpty(tokenList) || !tokenList.contains(token)){
+//            return;
+//        }
         String fileUploadPath = getFileUploadPath(fileFullName); // 完整的文件路径
         String extName = FileUtil.extName(fileFullName);
         byte[] bytes = FileUtil.readBytes(fileUploadPath);
