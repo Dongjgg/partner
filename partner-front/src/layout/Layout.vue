@@ -28,16 +28,16 @@
 
         <el-dropdown>
           <div class="el-dropdown-link" style="line-height: 60px">
-            <el-avatar :size="40" :src="store.loginInfo.user.avatar" style="position: absolute; top: 10px" />
-            <span style="font-size: 14px; margin-left: 45px">{{ store.loginInfo.user.name }}</span>
-            <el-icon class="el-icon--right">
-              <arrow-down />
-            </el-icon>
+            <el-avatar :size="40" :src="store.loginInfo.user.avatar" style="position: relative; top: 10px; right: 5px" />
+<!--            <span style="font-size: 14px; margin-left: 45px">{{ store.loginInfo.user.name }}</span>-->
+<!--            <el-icon class="el-icon&#45;&#45;right">-->
+<!--              <arrow-down />-->
+<!--            </el-icon>-->
           </div>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
-                <div @click="router.push('/personCenter')">个人信息</div>
+                <div @click="router.push('/personCenter?page=myInfo')">个人信息</div>
               </el-dropdown-item>
               <el-dropdown-item>修改密码</el-dropdown-item>
               <el-dropdown-item>

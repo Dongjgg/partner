@@ -30,6 +30,7 @@
 </template>
 
 <script setup>
+
 import { Plus } from '@element-plus/icons-vue'
 import {reactive, ref} from "vue";
 import config from "../../config";
@@ -72,6 +73,7 @@ const save = () => {
     }
   })
 }
+
 </script>
 
 <style scoped>
