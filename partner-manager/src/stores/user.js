@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
+import router from "@/router";
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore('manager', {
     state: () => ({
         managerInfo: {}
     }),
@@ -24,6 +25,10 @@ export const useUserStore = defineStore('user', {
         },
         setUser(user) {
             this.managerInfo.user = JSON.parse(JSON.stringify(user))
+        },
+        logout() {
+            localStorage.removeItem('manager')
+            router.push('/login')
         }
     },
     // 开启数据持久化

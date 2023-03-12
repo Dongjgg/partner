@@ -1,12 +1,28 @@
 <script setup>
-import {RouterView} from "vue-router";
-
+import { RouterView } from 'vue-router'
+import router from "@/router";
 import {
   Document,
   Menu as IconMenu,
   Location,
-  Setting,
+  Setting
 } from '@element-plus/icons-vue'
+import {useUserStore} from "@/stores/user";
+import request from "@/utils/request";
+import {ElMessage} from "element-plus";
+const userStore = useUserStore()
+const user = userStore.getUser
+
+const logout = () => {
+  request.get('/logout/' + user.uid).then(res => {
+    if (res.code === '200') {
+      userStore.logout()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+
+}
 </script>
 
 <template>
@@ -21,7 +37,16 @@ import {
           <div style="flex: 1">
           </div>
           <div style="width: 200px; text-align: right; padding-right: 20px">
-            头像
+            <el-dropdown>
+              <el-avatar :size="40" :src="user.avatar" style="margin-top: 10px" />
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item><div @click="router.push('/person')">个人信息</div></el-dropdown-item>
+                  <el-dropdown-item><div @click="logout">退出登录</div></el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+
           </div>
         </div>
       </div>
@@ -36,47 +61,30 @@ import {
         >
           <el-sub-menu index="1">
             <template #title>
-              <el-icon>
-                <location/>
-              </el-icon>
+              <el-icon><location /></el-icon>
               <span>Navigator One</span>
             </template>
             <el-menu-item index="/">item one</el-menu-item>
           </el-sub-menu>
           <el-menu-item index="2">
-            <el-icon>
-              <icon-menu/>
-            </el-icon>
+            <el-icon><icon-menu /></el-icon>
             <span>Navigator Two</span>
           </el-menu-item>
           <el-menu-item index="3" disabled>
-            <el-icon>
-              <document/>
-            </el-icon>
+            <el-icon><document /></el-icon>
             <span>Navigator Three</span>
           </el-menu-item>
           <el-menu-item index="4">
-            <el-icon>
-              <setting/>
-            </el-icon>
+            <el-icon><setting /></el-icon>
             <span>Navigator Four</span>
           </el-menu-item>
         </el-menu>
       </div>
 
       <div style="flex: 1; padding: 10px">
-        <RouterView/>
+        <RouterView />
       </div>
     </div>
+
   </div>
 </template>
-
-<script>
-export default {
-  name: "Layout"
-}
-</script>
-
-<style scoped>
-
-</style>
