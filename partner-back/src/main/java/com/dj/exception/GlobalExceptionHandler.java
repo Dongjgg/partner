@@ -40,6 +40,13 @@ public class GlobalExceptionHandler {
     }
 
 
+//    @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
+//    public Result sQLIntegrityConstraintViolationException(Exception e){
+//        log.error("数据库错误", e);
+//        return Result.error("未知错误");
+//    }
+
+
     @ExceptionHandler(value = Exception.class)
     public Result exceptionError(Exception e) {
         log.error("未知错误", e);

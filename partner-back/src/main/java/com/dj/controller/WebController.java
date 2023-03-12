@@ -5,6 +5,7 @@ import com.dj.controller.domain.LoginDTO;
 import com.dj.controller.domain.UserRequest;
 import com.dj.entity.User;
 import com.dj.service.IUserService;
+import com.dj.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,14 @@ public class WebController {
         LoginDTO res = userService.login(user);
         log.info("登录花费时间 {}ms", System.currentTimeMillis() - startTime);
         return Result.success(res);
+    }
+
+
+    @ApiOperation(value = "用户退出登录")
+    @GetMapping("/logout/{uid}")
+    public Result logout(@PathVariable String uid) {
+        userService.logout(uid);
+        return Result.success("退出登录成功");
     }
 
 //    @ApiOperation(value = "用户退出登录接口")

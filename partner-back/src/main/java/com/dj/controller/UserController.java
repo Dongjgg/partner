@@ -1,6 +1,7 @@
 package com.dj.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -40,7 +41,7 @@ public class UserController {
 
     @PostMapping
     public Result save(@RequestBody User user) {
-        userService.save(user);
+        userService.saveUser(user);
         return Result.success();
     }
 
@@ -82,10 +83,12 @@ public class UserController {
 
     @GetMapping("/page")
     public Result findPage(@RequestParam(defaultValue = "") String name,
+                           @RequestParam(defaultValue = "") String address,
                            @RequestParam Integer pageNum,
                            @RequestParam Integer pageSize) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>().orderByDesc("id");
-        queryWrapper.like(!"".equals(name), "name", name);
+        queryWrapper.like(StrUtil.isNotBlank(name),"name",name);
+        queryWrapper.like(StrUtil.isNotBlank(address), "address", address);
         return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 

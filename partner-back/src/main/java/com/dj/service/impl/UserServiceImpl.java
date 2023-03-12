@@ -72,6 +72,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return LoginDTO.builder().user(dbUser).token(tokenValue).build();
     }
 
+    /**
+     * 用户注册
+     * @param user
+     */
     @Override
     public void register(UserRequest user) {
         // 校验邮箱
@@ -87,6 +91,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
     }
 
+    /**
+     * 发送邮箱
+     * @param email
+     * @param type
+     */
     @Override
     public void sendEmail(String email, String type) {
         String emailPrefix = EmailCodeEnum.getValue(type);
@@ -153,6 +162,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return newPass;
     }
 
+    /**
+     * 退出登录
+     * @param uid
+     */
     @Override
     public void logout(String uid) {
         // 退出登录
@@ -178,6 +191,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
 
+    /**
+     * 保存用户
+     * @param user
+     * @return
+     */
     public User saveUser(User user) {
         User dbUser = getOne(new UpdateWrapper<User>().eq("username", user.getUsername()));
         if (dbUser != null) {
