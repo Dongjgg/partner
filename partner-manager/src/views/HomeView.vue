@@ -2,11 +2,16 @@
 import {
   Search,
   RefreshLeft,
-  Plus
+  Plus,
+  Bottom,
+  Top,
+  Remove
 } from '@element-plus/icons-vue'
 import {reactive, ref} from "vue";
 import request from "@/utils/request";
 import {ElMessage} from "element-plus";
+import config from "../../config";
+import {useUserStore} from "@/stores/user";
 
 const name = ref('')
 const address = ref('')
@@ -19,8 +24,26 @@ const state = reactive({
   form: {}
 })
 const multipleSelection = ref([])
+
+// 批量删除
 const handleSelectionChange = (val) => {
   multipleSelection.value = val
+}
+
+const confirmDelBatch = () => {
+  if (!multipleSelection.value || !multipleSelection.value.length) {
+    ElMessage.warning("请选择数据")
+    return
+  }
+  const idArr = multipleSelection.value.map(v => v.id)
+  request.post('/user/del/batch', idArr).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('操作成功')
+      load()  // 刷新表格数据
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
 }
 
 const load = () => {
@@ -118,6 +141,20 @@ const del = (id) => {
     }
   })
 }
+
+// 导出接口
+const exportData = () => {
+  window.open(`http://${config.serverUrl}/user/export`)
+}
+
+const userStore = useUserStore()
+const token = userStore.getBearerToken
+
+const handleImportSuccess = () => {
+  // 刷新表格
+  load()
+  ElMessage.success("导入成功")
+}
 </script>
 
 <template>
@@ -135,15 +172,47 @@ const del = (id) => {
           <RefreshLeft />
         </el-icon>  <span style="vertical-align: middle"> 重置 </span>
       </el-button>
-      <el-button type="success" class="ml5" @click="handleAdd">
+
+    </div>
+
+    <div style="margin: 10px 0">
+      <el-button type="success" @click="handleAdd">
         <el-icon style="vertical-align: middle">
           <Plus />
         </el-icon>  <span style="vertical-align: middle"> 新增 </span>
       </el-button>
+      <el-upload
+          class="ml5"
+          :show-file-list="false"
+          style="display: inline-block; position: relative; top: 3px"
+          :action='`http://${config.serverUrl}/user/import`'
+          :on-success="handleImportSuccess"
+          :headers="{ Authorization: token}"
+      >
+        <el-button type="primary">
+          <el-icon style="vertical-align: middle">
+            <Bottom />
+          </el-icon>  <span style="vertical-align: middle"> 导入 </span>
+        </el-button>
+      </el-upload>
+      <el-button type="primary" @click="exportData" class="ml5">
+        <el-icon style="vertical-align: middle">
+          <Top />
+        </el-icon>  <span style="vertical-align: middle"> 导出 </span>
+      </el-button>
+      <el-popconfirm title="您确定删除吗？" @confirm="confirmDelBatch">
+        <template #reference>
+          <el-button type="danger" style="margin-left: 5px">
+            <el-icon style="vertical-align: middle">
+              <Remove />
+            </el-icon>  <span style="vertical-align: middle"> 批量删除 </span>
+          </el-button>
+        </template>
+      </el-popconfirm>
     </div>
 
     <div style="margin: 10px 0">
-      <el-table :data="state.tableData" stripe border  @selection-change="handleSelectionChange">
+      <el-table :data="state.tableData" stripe border @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="name" label="名称"></el-table-column>
