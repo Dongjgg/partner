@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
  *  服务实现类
  * </p>
  *
- * @author dj
- * @since 2023-02-22
+ * @author Dj
+ * @since 2023-03-14
  */
 @Service
 public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> implements IDynamicService {

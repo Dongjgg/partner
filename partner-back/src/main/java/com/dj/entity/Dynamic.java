@@ -1,7 +1,9 @@
 package com.dj.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import cn.hutool.core.annotation.Alias;
@@ -9,6 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.dj.common.LDTConfig;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +20,8 @@ import lombok.Setter;
 * 
 * </p>
 *
-* @author dj
-* @since 2023-02-22
+* @author Dj
+* @since 2023-03-14
 */
 @Getter
 @Setter
@@ -27,6 +30,7 @@ public class Dynamic implements Serializable {
 
 private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     // 标题
@@ -53,12 +57,16 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty("创建时间")
     @Alias("创建时间")
     @TableField(fill = FieldFill.INSERT)
+    @JsonDeserialize(using = LDTConfig.CmzLdtDeSerializer.class)
+    @JsonSerialize(using = LDTConfig.CmzLdtSerializer.class)
     private LocalDateTime createTime;
 
     // 更新时间
     @ApiModelProperty("更新时间")
     @Alias("更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonDeserialize(using = LDTConfig.CmzLdtDeSerializer.class)
+    @JsonSerialize(using = LDTConfig.CmzLdtSerializer.class)
     private LocalDateTime updateTime;
 
     // 用户标识

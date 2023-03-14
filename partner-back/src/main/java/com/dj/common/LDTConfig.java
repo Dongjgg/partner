@@ -12,13 +12,17 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public class LDTConfig {
+
+
     /**
-     * localdatetime 序列化成 13 位时间戳   日期转时间戳
+     * localdatetime 序列化成 13 位时间戳
      * 北京时间
      */
-    public static class CmzLdtSerializer extends JsonSerializer<LocalDateTime>{
+    public static class CmzLdtSerializer extends JsonSerializer<LocalDateTime> {
+
         @Override
-        public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(LocalDateTime value, JsonGenerator gen,
+                              SerializerProvider serializers) throws IOException {
             gen.writeNumber(value.toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
         }
     }
@@ -28,8 +32,10 @@ public class LDTConfig {
      * 北京时间
      */
     public static class CmzLdtDeSerializer extends JsonDeserializer<LocalDateTime> {
+
         @Override
-        public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public LocalDateTime deserialize(JsonParser p,
+                                         DeserializationContext ctxt) throws IOException {
             long timestamp = p.getLongValue();
             return LocalDateTime.ofEpochSecond(timestamp / 1000, 0, ZoneOffset.ofHours(8));
         }

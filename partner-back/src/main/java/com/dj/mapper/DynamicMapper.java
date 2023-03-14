@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  *  Mapper 接口
  * </p>
  *
- * @author dj
- * @since 2023-02-22
+ * @author Dj
+ * @since 2023-03-14
  */
 public interface DynamicMapper extends BaseMapper<Dynamic> {
 

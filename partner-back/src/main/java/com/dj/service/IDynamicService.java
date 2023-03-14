@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *  服务类
  * </p>
  *
- * @author dj
- * @since 2023-02-22
+ * @author Dj
+ * @since 2023-03-14
  */
 public interface IDynamicService extends IService<Dynamic> {
 
