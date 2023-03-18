@@ -84,9 +84,13 @@ const ruleFormRef = ref()
 
 // 新增
 const handleAdd = () => {
+
   dialogFormVisible.value = true
-  ruleFormRef.value.resetFields()
-  state.form = {}
+  nextTick(()=>{
+      ruleFormRef.value.resetFields()
+      state.form = {}
+    })
+
 }
 
 // 保存
@@ -112,9 +116,12 @@ const save = () => {
 
 // 编辑
 const handleEdit = (raw) => {
-  state.form = JSON.parse(JSON.stringify(raw))
+
   dialogFormVisible.value = true
-  ruleFormRef.value.resetFields()
+  nextTick(()=>{
+      ruleFormRef.value.resetFields()
+      state.form = JSON.parse(JSON.stringify(raw))
+   })
 }
 
 // 删除

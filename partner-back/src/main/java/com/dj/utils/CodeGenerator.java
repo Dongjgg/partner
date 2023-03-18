@@ -23,16 +23,15 @@ import java.util.*;
 /**
  * 代码生成器
  * v1.0
- * 作者：Dj
+ * 作者：dj
  */
 @Slf4j
 public class CodeGenerator {
 
-    private static final String TABLE = "dynamic";
-    private static final String PACKAGE_NAME = "com.dj";
-    private static final String AUTHOR = "Dj";
+    private static final String TABLE = "sys_permission";
+    private static final String PACKAGE_NAME = "com.partner.boot";
+    private static final String AUTHOR = "dj";
 
-    //vue界面生成路径
     private static final String VUE_CODE_PATH = "E:\\IdeaProjects\\partner\\partner-manager\\src\\views\\";
 
     /*=========================  下面的不用改动  =========================*/
@@ -68,18 +67,12 @@ public class CodeGenerator {
         // 生成页面代码
         String vuePage = StrUtil.format(vueTemplate, map);  // vuePage是替换字符串模板后的内容
         // 写文件
-        //  "D:\\partner-manager\\src\\views\\"  是你vue工程文件的目录
+        //  "D:\\知识星球\\partner-manager\\src\\views\\"  是你vue工程文件的目录
         String entity = getEntity(tableName);
         FileUtil.writeUtf8String(vuePage, VUE_CODE_PATH + entity + ".vue");
         log.debug("==========================" + entity + ".vue文件生成完成！！！==========================");
     }
 
-
-    /**
-     * 获取要生成的表的列信息
-     * @param tableName
-     * @return
-     */
     private static List<TableColumn> getTableColumns(String tableName) {
         // 获取数据库连接的信息
         DBProp dbProp = getDBProp();
@@ -153,11 +146,6 @@ public class CodeGenerator {
         return lowerEntity.substring(0, 1).toUpperCase() + lowerEntity.substring(1);
     }
 
-
-    /**
-     * 获取数据库信息
-     * @return
-     */
     private static DBProp getDBProp() {
         ClassPathResource resource = new ClassPathResource("application.yml");
         YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
