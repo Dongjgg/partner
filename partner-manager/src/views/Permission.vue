@@ -47,11 +47,6 @@ const load = () => {
 }
 load()  // 调用 load方法拿到后台数据
 
-const reset = () => {
-  name.value = ''
-  load()
-}
-
 const dialogFormVisible = ref(false)
 
 const rules = reactive({
@@ -91,14 +86,40 @@ const save = () => {
   })
 }
 
+const changeHide = (row) => {
+  request.request({
+    url: '/permission',
+    method: 'put',
+    data: row
+  }).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('操作成功')
+      load()  // 刷新表格数据
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
 // 编辑
 const handleEdit = (raw) => {
   dialogFormVisible.value = true
   nextTick(() => {
     ruleFormRef.value.resetFields()
     state.form = JSON.parse(JSON.stringify(raw))
+
+    // getTreeArr(raw)
   })
 }
+
+// 从数组里删除指定id的数据，获取新的数组
+// const getTreeArr = (raw) => {
+//   state.tree = JSON.parse(JSON.stringify(state.tableData))
+//   if (raw) {
+//     let index = state.tree.findIndex(v => v.id === raw.id)
+//     state.tree.splice(index, 1)
+//   }
+// }
 
 // 删除
 const del = (id) => {
@@ -130,25 +151,23 @@ const handleImportSuccess = () => {
 const options = ref([])
 // 图标字典集合
 const icons = ref([])
+
+const handleNodeClick = (data) => {
+  if (data.id === state.form.id) {  // 当前编辑行的id跟选择的父节点的id如果相同的话，就不让他选择
+    console.log(data)
+    ElMessage.warning('父节点不能选择自身')
+
+    nextTick(() => {  // 等树节点的dom渲染完之后再去修改pid
+      // 重置pid
+      state.form.pid = null
+      console.log(state.form)
+    })
+  }
+}
 </script>
 
 <template>
   <div>
-    <div>
-      <el-input v-model="name" placeholder="请输入名称" class="w300" />
-      <el-button type="primary" class="ml5" @click="load">
-        <el-icon style="vertical-align: middle">
-          <Search />
-        </el-icon>  <span style="vertical-align: middle"> 搜索 </span>
-      </el-button>
-      <el-button type="warning" class="ml5" @click="reset">
-        <el-icon style="vertical-align: middle">
-          <RefreshLeft />
-        </el-icon>  <span style="vertical-align: middle"> 重置 </span>
-      </el-button>
-
-    </div>
-
     <div style="margin: 10px 0">
       <el-button type="success" @click="handleAdd">
         <el-icon style="vertical-align: middle">
@@ -199,8 +218,14 @@ const icons = ref([])
         <el-table-column prop="type" label="类型">
           <template #default="scope">
             <el-tag type="warning" v-if="scope.row.type === 1">菜单目录</el-tag>
-            <el-tag type="primary" v-if="scope.row.type === 2">菜单页面</el-tag>
+            <el-tag v-if="scope.row.type === 2">菜单页面</el-tag>
             <el-tag type="success" v-if="scope.row.type === 3">页面按钮</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="type" label="类型">
+          <template #default="scope">
+            <el-switch v-model="scope.row.hide" @change="changeHide(scope.row)"></el-switch>
           </template>
         </el-table-column>
 
@@ -219,10 +244,17 @@ const icons = ref([])
 
     <el-dialog v-model="dialogFormVisible" title="信息" width="40%">
       <el-form ref="ruleFormRef" :rules="rules" :model="state.form" label-width="80px" style="padding: 0 20px" status-icon>
+        <el-form-item prop="type" label="类型" >
+          <el-radio-group v-model="state.form.type">
+            <el-radio :label="1">菜单目录</el-radio>
+            <el-radio :label="2">菜单页面</el-radio>
+            <el-radio :label="3">页面按钮</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item prop="name" label="名称" >
           <el-input v-model="state.form.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item prop="path" label="访问路径" v-if="state.form.type === 1 || state.form.type === 2">
+        <el-form-item prop="path" label="访问路径" v-if="state.form.type === 1">
           <el-input v-model="state.form.path" autocomplete="off"  />
         </el-form-item>
         <el-form-item prop="page" label="页面路径" v-if="state.form.type === 2" >
@@ -245,26 +277,10 @@ const icons = ref([])
           <el-input v-model="state.form.auth" autocomplete="off"  />
         </el-form-item>
         <el-form-item prop="pid" label="父级" >
-          <el-select v-model="state.form.pid"  placeholder="请选择" style="width: 100%">
-            <el-option
-                v-for="item in state.tableData"
-                :key="item.id"
-                :label="item.name"
-                :value="item.name"
-            >
-              <el-tree :data="state.tableData"/>
-            </el-option>
-
-          </el-select>
+          <el-tree-select style="width: 100%" v-model="state.form.pid" :data="state.tableData"
+                          @node-click="handleNodeClick"
+                          :props="{ label: 'name', value: 'id' }" :render-after-expand="false" check-strictly />
         </el-form-item>
-        <el-form-item prop="type" label="类型" >
-          <el-radio-group v-model="state.form.type">
-            <el-radio :label="1">菜单目录</el-radio>
-            <el-radio :label="2">菜单页面</el-radio>
-            <el-radio :label="3">页面按钮</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
       </el-form>
       <template #footer>
       <span class="dialog-footer">
