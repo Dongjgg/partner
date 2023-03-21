@@ -78,4 +78,8 @@ private static final long serialVersionUID = 1L;
     @Alias("更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime  updateTime;
+
+    @ApiModelProperty("角色")
+    @Alias("角色")
+    private String role;
 }

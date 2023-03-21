@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import cn.hutool.core.annotation.Alias;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,20 +20,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
-* <p>
-* 
-* </p>
-*
-* @author Dj
-* @since 2023-03-15
-*/
+ * <p>
+ *
+ * </p>
+ *
+ * @author DJ
+ * @since 2023-01-16
+ */
 @Getter
 @Setter
 @TableName("sys_role")
 @ApiModel(value = "Role对象", description = "")
 public class Role implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -67,4 +69,7 @@ private static final long serialVersionUID = 1L;
     @JsonDeserialize(using = LDTConfig.CmzLdtDeSerializer.class)
     @JsonSerialize(using = LDTConfig.CmzLdtSerializer.class)
     private LocalDateTime updateTime;
+
+    @TableField(exist = false)
+    private List<Integer> permissionIds;
 }

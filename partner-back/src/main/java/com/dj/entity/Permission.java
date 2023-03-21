@@ -24,7 +24,7 @@ import lombok.Setter;
  *
  * </p>
  *
- * @author dj
+ * @author DJ
  * @since 2023-01-16
  */
 @Getter
@@ -102,4 +102,7 @@ public class Permission implements Serializable {
 
     @TableField(exist = false)
     private List<Permission> children;
+    @ApiModelProperty("是否隐藏")
+    @Alias("是否隐藏")
+    private Boolean hide;
 }

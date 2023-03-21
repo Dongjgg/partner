@@ -4,6 +4,7 @@ import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.core.util.StrUtil;
 import com.dj.common.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,6 +12,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(DuplicateKeyException.class)
+    public Result duplicateKeyException(DuplicateKeyException e) {
+        log.error("数据添加错误", e);
+        return Result.error("500", "数据重复");
+    }
 
     @ExceptionHandler(value = SaTokenException.class)
     public Result notLoginException(SaTokenException e) {
@@ -38,13 +45,6 @@ public class GlobalExceptionHandler {
         }
         return Result.error(e.getMessage());
     }
-
-
-//    @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
-//    public Result sQLIntegrityConstraintViolationException(Exception e){
-//        log.error("数据库错误", e);
-//        return Result.error("未知错误");
-//    }
 
 
     @ExceptionHandler(value = Exception.class)
